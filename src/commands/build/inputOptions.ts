@@ -33,7 +33,15 @@ export default {
       output: () => ''
     }),
     sass(),
-    rollupPluginNodeResolve(),
-    rollupPluginCommonjs({})
+    rollupPluginNodeResolve({
+      module: false,
+      extensions: ['.js']
+    }),
+    rollupPluginCommonjs({
+      namedExports: {
+        'node_modules/@rematch/core/dist/cjs/index.js': ['init'],
+        'node_modules/apollo-link-http/lib/bundle.umd.js': ['HttpLink']
+      }
+    })
   ]
 };
