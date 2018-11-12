@@ -91,21 +91,10 @@ export default class Module extends File {
               CallExpression: (astPath: any) => {
                 if (astPath.node.callee.name === 'require') {
                   const id = astPath.node.arguments[0].value;
-                  if (!id.startsWith('./')) {
-                    const realPath = resolvePackage(id, this.cwd, this.target);
-                    const relativePathFromNodeModules = path.relative(
-                      path.resolve(this.cwd, 'node_modules'),
-                      path.resolve(realPath)
-                    );
-                    const distPath = path.relative(
-                      this.getDestinationPath(),
-                      path.resolve(
-                        this.getDestinationDir(),
-                        relativePathFromNodeModules
-                      )
-                    );
-                    astPath.node.arguments[0].value = distPath;
-                  }
+                  const basedir = path.dirname(this.sourcePath)
+                  const realPath = resolvePackage(id, basedir, this.target)
+                  const distPath = path.relative(basedir, realPath)
+                  astPath.node.arguments[0].value = distPath;
                 }
               },
               ImportDeclaration: (astPath: any) => {
