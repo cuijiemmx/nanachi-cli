@@ -99,7 +99,53 @@ export default class Module extends File {
               },
               ImportDeclaration: (astPath: any) => {
                 const id = astPath.node.source.value;
-                if (!id.startsWith('./')) {
+                // if (!id.startsWith('./')) {
+                  const realPath = resolvePackage(
+                    id,
+                    path.parse(this.getSourcePath()).dir,
+                    this.target
+                  );
+                  const relativePathFromNodeModules = path.relative(
+                    path.resolve(this.cwd, 'node_modules'),
+                    path.resolve(realPath)
+                  );
+                  const distPath = path.relative(
+                    path.parse(this.getDestinationPath()).dir,
+                    path.resolve(
+                      this.getDestinationDir(),
+                      relativePathFromNodeModules
+                    )
+                  );
+                  astPath.node.source.value = distPath;
+                // }
+              },
+              ExportNamedDeclaration: (astPath: any) => {
+                if (astPath.node.source && astPath.node.source.value) {
+                  const id = astPath.node.source.value;
+                  console.log('EXPORT', id)
+                  const realPath = resolvePackage(
+                    id,
+                    path.parse(this.getSourcePath()).dir,
+                    this.target
+                  );
+                  const relativePathFromNodeModules = path.relative(
+                    path.resolve(this.cwd, 'node_modules'),
+                    path.resolve(realPath)
+                  );
+                  const distPath = path.relative(
+                    path.parse(this.getDestinationPath()).dir,
+                    path.resolve(
+                      this.getDestinationDir(),
+                      relativePathFromNodeModules
+                    )
+                  );
+                  astPath.node.source.value = distPath;
+                }
+              },
+              ExportAllDeclaration: (astPath: any) => {
+                if (astPath.node.source && astPath.node.source.value) {
+                  const id = astPath.node.source.value;
+                  console.log('EXPORT ALL:', id)
                   const realPath = resolvePackage(
                     id,
                     path.parse(this.getSourcePath()).dir,

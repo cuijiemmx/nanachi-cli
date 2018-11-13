@@ -34,14 +34,13 @@ export default {
     }),
     sass(),
     rollupPluginNodeResolve({
-      module: false,
-      extensions: ['.js']
+      module: true,
+      jsnext: true
     }),
     rollupPluginCommonjs({
-      namedExports: {
-        'node_modules/@rematch/core/dist/cjs/index.js': ['init'],
-        'node_modules/apollo-link-http/lib/bundle.umd.js': ['HttpLink']
-      }
-    })
-  ]
+      // include: 'node_modules/'
+    }),
+
+  ],
+  preserveSymlinks: true
 };

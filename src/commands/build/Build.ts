@@ -175,7 +175,7 @@ export default class Build {
       const filePath = path.resolve(
         this.cwd,
         `node_modules/anujs/dist/${
-          customizedReactFileNames[this.target].primary
+        customizedReactFileNames[this.target].primary
         }`
       );
 
@@ -189,7 +189,7 @@ export default class Build {
     } catch (error) {
       this.spinner.stop(
         chalk`Cannot retrieve latest customized {cyan React} library` +
-          chalk` from {cyan ${libraryRemoteUri}}, make sure you can access GitHub`
+        chalk` from {cyan ${libraryRemoteUri}}, make sure you can access GitHub`
       );
       process.exit(1);
     }
@@ -237,6 +237,7 @@ export default class Build {
     process.exit(0);
   }
   private createModule(module: InterfaceEntryOptions, index?: number) {
+    console.log('CREATE: ', module.sourcePath)
     const ext = path.parse(module.sourcePath).ext;
     switch (true) {
       case index === 0:

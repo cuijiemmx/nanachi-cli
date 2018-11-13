@@ -1,4 +1,5 @@
 import fs from 'fs-extra';
+import { hackExt } from '../../shared/hack';
 
 export interface InterfaceWriteFile {
   type: 'write';
@@ -21,6 +22,7 @@ export default class File {
     type,
     sourcePath
   }: InterfaceWriteFile | InterfaceCopyFile) {
+    destinationPath = hackExt(destinationPath)
     switch (type) {
       case 'write':
         await fs.ensureFile(destinationPath);
